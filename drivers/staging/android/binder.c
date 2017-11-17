@@ -41,6 +41,7 @@
 
 #include "binder.h"
 #include "binder_trace.h"
+#include <../drivers/oneplus/coretech/opchain/opchain_binder.h>
 
 static DEFINE_MUTEX(binder_main_lock);
 static DEFINE_MUTEX(binder_deferred_lock);
@@ -1522,6 +1523,11 @@ static void binder_transaction(struct binder_proc *proc,
 	}
 	off_end = (void *)offp + tr->offsets_size;
 	off_min = 0;
+    opc_binder_pass(
+        t->buffer->data_size,
+        (uint32_t *)t->buffer->data,
+        1);
+
 	for (; offp < off_end; offp++) {
 		struct flat_binder_object *fp;
 
@@ -2387,6 +2393,11 @@ retry:
 			continue;
 
 		BUG_ON(t->buffer == NULL);
+        opc_binder_pass(
+            t->buffer->data_size,
+            (uint32_t *)t->buffer->data,
+            0);
+
 		if (t->buffer->target_node) {
 			struct binder_node *target_node = t->buffer->target_node;
 
