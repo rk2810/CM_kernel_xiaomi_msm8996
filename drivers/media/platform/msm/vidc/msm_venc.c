@@ -1859,6 +1859,9 @@ static inline int start_streaming(struct msm_vidc_inst *inst)
 		msm_comm_session_clean(inst);
 		goto fail_start;
 	}
+
+	msm_comm_scale_clocks_and_bus(inst);
+
 	msm_dcvs_init_load(inst);
 
 fail_start:
