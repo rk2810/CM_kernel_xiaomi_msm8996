@@ -1111,25 +1111,19 @@ static ssize_t time_in_state_show(struct device *dev, struct device_attribute *a
 				char *buf)
 {
 	struct devfreq *devfreq = to_devfreq(dev);
-	ssize_t len;
+	ssize_t len = 0;
 	int i, err;
 	unsigned int max_state = devfreq->profile->max_state;
 
 	err = devfreq_update_status(devfreq, devfreq->previous_freq);
+
 	if (err)
 		return 0;
 
-	len = 0;
-	
 	for (i = 0; i < max_state; i++) {
-		len += sprintf(buf + len, "%u ",
-				devfreq->profile->freq_table[i]);
-		len += sprintf(buf + len, "%u ",
-			jiffies_to_msecs(devfreq->time_in_state[i]));
+		len += sprintf(buf + len, "%u %u\n", devfreq->profile->freq_table[i],
+		jiffies_to_msecs(devfreq->time_in_state[i]));
 	}
-
-	len += sprintf(buf + len, "\n");
-	
 	return len;
 }
 static DEVICE_ATTR_RO(time_in_state);
