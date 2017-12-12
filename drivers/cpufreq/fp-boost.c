@@ -114,6 +114,9 @@ static int do_cpu_boost(struct notifier_block *nb,
 	if (action != CPUFREQ_ADJUST)
 		return NOTIFY_OK;
 
+	if (is_display_on())
+		return NOTIFY_OK;
+
 	state = get_boost_state(b);
 
 	/*
