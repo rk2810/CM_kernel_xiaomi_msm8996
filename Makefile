@@ -1,8 +1,8 @@
 VERSION = 3
 PATCHLEVEL = 18
-SUBLEVEL = 87
-EXTRAVERSION = -Darkness-Remix
-NAME = Shuffling Zombie Juror
+SUBLEVEL = 88
+EXTRAVERSION = -My-Dark-Desire
+NAME = Diseased Newt
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
