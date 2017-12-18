@@ -535,6 +535,12 @@ config BATTERY_BCL
 	  thermal daemon enables BCL.
 	  It will notify thermal daemon if IBat crosses Imax threshold.
 
+config MSM_BCL_DARKNESS_CTL
+	bool "BCL driver hack to control with new condition"
+	depends on BATTERY_BCL
+	help
+	  Say Y here to enable new condition.
+
 config CHARGER_TPS65090
 	tristate "TPS65090 battery charger driver"
 	depends on MFD_TPS65090

@@ -256,9 +256,15 @@ static void update_cpu_freq(void)
 	cpufreq_req.freq.max_freq = UINT_MAX;
 	cpufreq_req.freq.min_freq = CPUFREQ_MIN_NO_MITIGATION;
 
+#ifdef CONFIG_MSM_BCL_DARKNESS_CTL
+	if (bcl_vph_state == BCL_LOW_THRESHOLD
+		|| (bcl_ibat_state == BCL_HIGH_THRESHOLD
+		&& bcl_soc_state <= BCL_LOW_THRESHOLD)) {
+#else
 	if (bcl_vph_state == BCL_LOW_THRESHOLD
 		|| bcl_ibat_state == BCL_HIGH_THRESHOLD
 		|| bcl_soc_state == BCL_LOW_THRESHOLD) {
+#endif /* CONFIG_MSM_BCL_DARKNESS_CTL */
 		cpufreq_req.freq.max_freq = (gbcl->bcl_monitor_type
 			== BCL_IBAT_MONITOR_TYPE) ? gbcl->btm_freq_max
 			: gbcl->bcl_p_freq_max;
