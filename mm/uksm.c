@@ -163,7 +163,7 @@ static int is_full_zero(const void *s1, size_t len)
 }
 
 #endif
-#elif defined(CONFIG_ARM)
+#elif defined(CONFIG_ARM64)
 #include "uksm_arm.h"
 #else
 static int is_full_zero(void *s1, size_t len)
@@ -515,7 +515,7 @@ static unsigned int uksm_sleep_jiffies;
 /* Base CPU limit that ratios are scaled against */
 static unsigned int uksm_max_cpu_percentage;
 
-static int uksm_cpu_governor = 1;
+static int uksm_cpu_governor;
 
 static char *uksm_cpu_governor_str[4] = { "full", "medium", "low", "quiet" };
 
@@ -568,7 +568,7 @@ static unsigned long long uksm_sleep_times;
 
 #define UKSM_RUN_STOP	0
 #define UKSM_RUN_MERGE	1
-static unsigned int uksm_run = 1;
+static unsigned int uksm_run = 0;
 
 static DECLARE_WAIT_QUEUE_HEAD(uksm_thread_wait);
 static DEFINE_MUTEX(uksm_thread_mutex);
