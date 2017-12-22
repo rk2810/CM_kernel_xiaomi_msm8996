@@ -69,6 +69,7 @@
 #include <linux/gcd.h>
 #include <linux/freezer.h>
 #include <linux/sradix-tree.h>
+#include <linux/charging_state.h>
 
 #include <asm/tlbflush.h>
 #include "internal.h"
@@ -569,6 +570,8 @@ static unsigned long long uksm_sleep_times;
 #define UKSM_RUN_STOP	0
 #define UKSM_RUN_MERGE	1
 static unsigned int uksm_run = 0;
+static unsigned int uksm_run_user = 0;
+static unsigned int uksm_run_on_charging = 0;
 
 static DECLARE_WAIT_QUEUE_HEAD(uksm_thread_wait);
 static DEFINE_MUTEX(uksm_thread_mutex);
@@ -728,7 +731,27 @@ static inline void free_vma_slot(struct vma_slot *vma_slot)
 	kmem_cache_free(vma_slot_cache, vma_slot);
 }
 
+void uksm_charging_switcher(void)
+{
+	unsigned long change_uksm_run;
 
+	if (uksm_run_on_charging) {
+		if (charging_detected()) {
+			change_uksm_run = UKSM_RUN_MERGE;
+		} else {
+			change_uksm_run = UKSM_RUN_STOP;
+		}
+	} else {
+		change_uksm_run = uksm_run_user;
+	}
+
+	mutex_lock(&uksm_thread_mutex);
+	if (uksm_run != change_uksm_run)
+		uksm_run = change_uksm_run;
+	if (uksm_run & UKSM_RUN_MERGE)
+		wake_up_interruptible(&uksm_thread_wait);
+	mutex_unlock(&uksm_thread_mutex);
+}
 
 static inline struct rmap_item *alloc_rmap_item(void)
 {
@@ -4908,6 +4931,7 @@ static ssize_t run_store(struct kobject *kobj, struct kobj_attribute *attr,
 	mutex_lock(&uksm_thread_mutex);
 	if (uksm_run != flags) {
 		uksm_run = flags;
+		uksm_run_user = flags;
 		if (flags & UKSM_RUN_MERGE)
 			wake_up_interruptible(&uksm_thread_wait);
 	}
@@ -4916,6 +4940,31 @@ static ssize_t run_store(struct kobject *kobj, struct kobj_attribute *attr,
 	return count;
 }
 UKSM_ATTR(run);
+
+static ssize_t run_charging_show(struct kobject *kobj, struct kobj_attribute *attr,
+			char *buf)
+{
+	return sprintf(buf, "%u\n", uksm_run_on_charging);
+}
+
+static ssize_t run_charging_store(struct kobject *kobj, struct kobj_attribute *attr,
+			 const char *buf, size_t count)
+{
+	int err;
+	unsigned long flags;
+
+	err = kstrtoul(buf, 10, &flags);
+	if (err || flags > UKSM_RUN_MERGE || flags < UKSM_RUN_STOP)
+		return -EINVAL;
+
+	if (uksm_run_on_charging != flags)
+		uksm_run_on_charging = flags;
+
+	uksm_charging_switcher();
+
+	return count;
+}
+UKSM_ATTR(run_charging);
 
 static ssize_t abundant_threshold_show(struct kobject *kobj,
 				     struct kobj_attribute *attr, char *buf)
@@ -5265,6 +5314,7 @@ static struct attribute *uksm_attrs[] = {
 	&sleep_millisecs_attr.attr,
 	&cpu_governor_attr.attr,
 	&run_attr.attr,
+	&run_charging_attr.attr,
 	&ema_per_page_time_attr.attr,
 	&pages_shared_attr.attr,
 	&pages_sharing_attr.attr,

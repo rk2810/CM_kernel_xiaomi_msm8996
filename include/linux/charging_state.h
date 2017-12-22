@@ -14,4 +14,7 @@
 
 extern bool charging_detected(void);
 
+// Run UKSM only when the phone is charging
+extern void uksm_charging_switcher(void);
+
 #endif
