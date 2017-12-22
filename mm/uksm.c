@@ -164,7 +164,7 @@ static int is_full_zero(const void *s1, size_t len)
 }
 
 #endif
-#elif defined(CONFIG_ARM64)
+#elif defined(CONFIG_ARM)
 #include "uksm_arm.h"
 #else
 static int is_full_zero(void *s1, size_t len)
