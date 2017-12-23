@@ -419,6 +419,8 @@ static void cpufreq_darkness_timer(unsigned long data)
 	if (pcpu->policy->min == pcpu->policy->max)
 		goto rearm;
 
+	now = ktime_to_us(ktime_get());
+
 	spin_lock_irqsave(&pcpu->load_lock, flags);
 	now = update_load(data);
 	delta_time = (unsigned int)(now - pcpu->cputime_speedadj_timestamp);
