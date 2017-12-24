@@ -631,7 +631,8 @@ KBUILD_CFLAGS 	+= $(call cc-disable-warning,maybe-uninitialized,) \
 		   $(call cc-disable-warning,unused-function,) \
 		   $(call cc-disable-warning,tautological-compare,) \
 		   $(call cc-disable-warning,return-local-addr,) \
-		   $(call cc-disable-warning,array-bounds,)
+		   $(call cc-disable-warning,array-bounds,) \
+		   $(call cc-disable-warning,misleading-indentation,)
 
 # Tell gcc to never replace conditional load with a non-conditional one
 KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
