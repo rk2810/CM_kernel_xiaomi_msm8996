@@ -39,7 +39,6 @@ menuconfig FB
 
 config FIRMWARE_EDID
        bool "Enable firmware EDID"
-       depends on FB
        default n
        ---help---
          This enables access to the EDID transferred from the firmware.
@@ -58,14 +57,12 @@ config FB_CMDLINE
 
 config FB_DDC
        tristate
-       depends on FB
        select I2C_ALGOBIT
        select I2C
        default n
 
 config FB_BOOT_VESA_SUPPORT
 	bool
-	depends on FB
 	default n
 	---help---
 	  If true, at least one selected framebuffer driver can take advantage
@@ -73,7 +70,6 @@ config FB_BOOT_VESA_SUPPORT
 
 config FB_CFB_FILLRECT
 	tristate
-	depends on FB
 	default n
 	---help---
 	  Include the cfb_fillrect function for generic software rectangle
@@ -82,7 +78,6 @@ config FB_CFB_FILLRECT
 
 config FB_CFB_COPYAREA
 	tristate
-	depends on FB
 	default n
 	---help---
 	  Include the cfb_copyarea function for generic software area copying.
@@ -91,7 +86,6 @@ config FB_CFB_COPYAREA
 
 config FB_CFB_IMAGEBLIT
 	tristate
-	depends on FB
 	default n
 	---help---
 	  Include the cfb_imageblit function for generic software image
@@ -100,7 +94,6 @@ config FB_CFB_IMAGEBLIT
 
 config FB_CFB_REV_PIXELS_IN_BYTE
 	bool
-	depends on FB
 	default n
 	---help---
 	  Allow generic frame-buffer functions to work on displays with 1, 2
@@ -109,7 +102,6 @@ config FB_CFB_REV_PIXELS_IN_BYTE
 
 config FB_SYS_FILLRECT
 	tristate
-	depends on FB
 	default n
 	---help---
 	  Include the sys_fillrect function for generic software rectangle
@@ -118,7 +110,6 @@ config FB_SYS_FILLRECT
 
 config FB_SYS_COPYAREA
 	tristate
-	depends on FB
 	default n
 	---help---
 	  Include the sys_copyarea function for generic software area copying.
@@ -127,7 +118,6 @@ config FB_SYS_COPYAREA
 
 config FB_SYS_IMAGEBLIT
 	tristate
-	depends on FB
 	default n
 	---help---
 	  Include the sys_imageblit function for generic software image
@@ -136,7 +126,6 @@ config FB_SYS_IMAGEBLIT
 
 menuconfig FB_FOREIGN_ENDIAN
 	bool "Framebuffer foreign endianness support"
-	depends on FB
 	---help---
 	  This menu will let you enable support for the framebuffers with
 	  non-native endianness (e.g. Little-Endian framebuffer on a
@@ -160,21 +149,17 @@ endchoice
 
 config FB_SYS_FOPS
        tristate
-       depends on FB
        default n
 
 config FB_DEFERRED_IO
 	bool
-	depends on FB
 
 config FB_HECUBA
 	tristate
-	depends on FB
 	depends on FB_DEFERRED_IO
 
 config FB_SVGALIB
 	tristate
-	depends on FB
 	default n
 	---help---
 	  Common utility functions useful to fbdev drivers of VGA-based
@@ -182,19 +167,16 @@ config FB_SVGALIB
 
 config FB_MACMODES
        tristate
-       depends on FB
        default n
 
 config FB_BACKLIGHT
 	bool
-	depends on FB
 	select BACKLIGHT_LCD_SUPPORT
 	select BACKLIGHT_CLASS_DEVICE
 	default n
 
 config FB_MODE_HELPERS
         bool "Enable Video Mode Handling Helpers"
-        depends on FB
 	default n
 	---help---
 	  This enables functions for handling video modes using the
@@ -205,7 +187,6 @@ config FB_MODE_HELPERS
 
 config FB_TILEBLITTING
        bool "Enable Tile Blitting Support"
-       depends on FB
        default n
        ---help---
          This enables tile blitting.  Tile blitting is a drawing technique
@@ -222,11 +203,10 @@ config FB_TILEBLITTING
 	 unsure, say N.
 
 comment "Frame buffer hardware drivers"
-	depends on FB
 
 config FB_GRVGA
 	tristate "Aeroflex Gaisler framebuffer support"
-	depends on FB && SPARC
+	depends on SPARC
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -235,7 +215,7 @@ config FB_GRVGA
 
 config FB_CIRRUS
 	tristate "Cirrus Logic support"
-	depends on FB && (ZORRO || PCI)
+	depends on (ZORRO || PCI)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -253,7 +233,7 @@ config FB_CIRRUS
 
 config FB_PM2
 	tristate "Permedia2 support"
-	depends on FB && ((AMIGA && BROKEN) || PCI)
+	depends on ((AMIGA && BROKEN) || PCI)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -280,7 +260,7 @@ config FB_PM2_FIFO_DISCONNECT
 config FB_ARMCLCD
 	tristate "ARM PrimeCell PL110 support"
 	depends on ARM || ARM64 || COMPILE_TEST
-	depends on FB && ARM_AMBA
+	depends on  ARM_AMBA
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -321,7 +301,7 @@ config FB_CLPS711X_OLD
 
 config FB_CLPS711X
 	tristate "CLPS711X LCD support"
-	depends on FB && (ARCH_CLPS711X || COMPILE_TEST)
+	depends on  (ARCH_CLPS711X || COMPILE_TEST)
 	select FB_CLPS711X_OLD if ARCH_CLPS711X && !ARCH_MULTIPLATFORM
 	select BACKLIGHT_LCD_SUPPORT
 	select FB_MODE_HELPERS
@@ -350,7 +330,7 @@ config FB_SA1100
 
 config FB_IMX
 	tristate "Freescale i.MX1/21/25/27 LCD support"
-	depends on FB && ARCH_MXC
+	depends on  ARCH_MXC
 	select BACKLIGHT_LCD_SUPPORT
 	select LCD_CLASS_DEVICE
 	select FB_CFB_FILLRECT
@@ -361,7 +341,7 @@ config FB_IMX
 
 config FB_CYBER2000
 	tristate "CyberPro 2000/2010/5000 support"
-	depends on FB && PCI && (BROKEN || !SPARC64)
+	depends on PCI && (BROKEN || !SPARC64)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -407,7 +387,7 @@ config FB_Q40
 
 config FB_AMIGA
 	tristate "Amiga native chipset support"
-	depends on FB && AMIGA
+	depends on AMIGA
 	help
 	  This is the frame buffer device driver for the builtin graphics
 	  chipset found in Amigas.
@@ -453,7 +433,7 @@ config FB_FM2
 
 config FB_ARC
 	tristate "Arc Monochrome LCD board support"
-	depends on FB && X86
+	depends on X86
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
 	select FB_SYS_IMAGEBLIT
@@ -551,7 +531,7 @@ config FB_IMSTT
 
 config FB_VGA16
 	tristate "VGA 16-color graphics support"
-	depends on FB && (X86 || PPC)
+	depends on  (X86 || PPC)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -566,7 +546,7 @@ config FB_VGA16
 
 config FB_BF54X_LQ043
 	tristate "SHARP LQ043 TFT LCD (BF548 EZKIT)"
-	depends on FB && (BF54x) && !BF542
+	depends on (BF54x) && !BF542
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -575,7 +555,7 @@ config FB_BF54X_LQ043
 
 config FB_BFIN_T350MCQB
 	tristate "Varitronix COG-T350MCQB TFT LCD display (BF527 EZKIT)"
-	depends on FB && BLACKFIN
+	depends on BLACKFIN
 	select BFIN_GPTIMERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -587,7 +567,7 @@ config FB_BFIN_T350MCQB
 
 config FB_BFIN_LQ035Q1
 	tristate "SHARP LQ035Q1DH02 TFT LCD"
-	depends on FB && BLACKFIN && SPI
+	depends on BLACKFIN && SPI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -603,7 +583,7 @@ config FB_BFIN_LQ035Q1
 
 config FB_BF537_LQ035
 	tristate "SHARP LQ035 TFT LCD (BF537 STAMP)"
-	depends on FB && (BF534 || BF536 || BF537) && I2C_BLACKFIN_TWI
+	depends on (BF534 || BF536 || BF537) && I2C_BLACKFIN_TWI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -617,7 +597,7 @@ config FB_BF537_LQ035
 
 config FB_BFIN_7393
 	tristate "Blackfin ADV7393 Video encoder"
-	depends on FB && BLACKFIN
+	depends on BLACKFIN
 	select I2C
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -669,7 +649,7 @@ endchoice
 
 config FB_STI
 	tristate "HP STI frame buffer device support"
-	depends on FB && PARISC
+	depends on PARISC
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -705,7 +685,7 @@ config FB_HP300
 
 config FB_TGA
 	tristate "TGA/SFB+ framebuffer support"
-	depends on FB && (ALPHA || TC)
+	depends on (ALPHA || TC)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -726,7 +706,7 @@ config FB_TGA
 
 config FB_UVESA
 	tristate "Userspace VESA VGA graphics support"
-	depends on FB && CONNECTOR
+	depends on CONNECTOR
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -768,7 +748,7 @@ config FB_EFI
 
 config FB_N411
        tristate "N411 Apollo/Hecuba devkit support"
-       depends on FB && X86 && MMU
+       depends on X86 && MMU
        select FB_SYS_FILLRECT
        select FB_SYS_COPYAREA
        select FB_SYS_IMAGEBLIT
@@ -781,7 +761,7 @@ config FB_N411
 
 config FB_HGA
 	tristate "Hercules mono graphics support"
-	depends on FB && X86
+	depends on X86
 	help
 	  Say Y here if you have a Hercules mono graphics card.
 
@@ -941,7 +921,7 @@ config FB_XVR1000
 
 config FB_PVR2
 	tristate "NEC PowerVR 2 display support"
-	depends on FB && SH_DREAMCAST
+	depends on SH_DREAMCAST
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -962,7 +942,7 @@ config FB_PVR2
 
 config FB_OPENCORES
 	tristate "OpenCores VGA/LCD core 2.0 framebuffer support"
-	depends on FB && HAS_DMA
+	depends on HAS_DMA
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -978,7 +958,6 @@ config FB_OPENCORES
 
 config FB_S1D13XXX
 	tristate "Epson S1D13XXX framebuffer support"
-	depends on FB
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -989,7 +968,7 @@ config FB_S1D13XXX
 
 config FB_ATMEL
 	tristate "AT91/AT32 LCD Controller support"
-	depends on FB && HAVE_FB_ATMEL
+	depends on HAVE_FB_ATMEL
 	select FB_BACKLIGHT
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1018,7 +997,7 @@ config FB_ATMEL_STN
 
 config FB_NVIDIA
 	tristate "nVidia Framebuffer Support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
@@ -1066,7 +1045,7 @@ config FB_NVIDIA_BACKLIGHT
 
 config FB_RIVA
 	tristate "nVidia Riva support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_BACKLIGHT if FB_RIVA_BACKLIGHT
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
@@ -1113,7 +1092,7 @@ config FB_RIVA_BACKLIGHT
 
 config FB_I740
 	tristate "Intel740 support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1125,7 +1104,7 @@ config FB_I740
 
 config FB_I810
 	tristate "Intel 810/815 support"
-	depends on FB && PCI && X86_32 && AGP_INTEL
+	depends on PCI && X86_32 && AGP_INTEL
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1172,7 +1151,7 @@ config FB_I810_I2C
 
 config FB_LE80578
 	tristate "Intel LE80578 (Vermilion) support"
-	depends on FB && PCI && X86
+	depends on PCI && X86
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1182,13 +1161,13 @@ config FB_LE80578
 
 config FB_CARILLO_RANCH
 	tristate "Intel Carillo Ranch support"
-	depends on FB_LE80578 && FB && PCI && X86
+	depends on FB_LE80578 && PCI && X86
 	help
 	  This driver supports the LE80578 (Carillo Ranch) board
 
 config FB_INTEL
 	tristate "Intel 830M/845G/852GM/855GM/865G/915G/945G/945GM/965G/965GM support"
-	depends on FB && PCI && X86 && AGP_INTEL && EXPERT
+	depends on PCI && X86 && AGP_INTEL && EXPERT
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1225,7 +1204,7 @@ config FB_INTEL_I2C
 
 config FB_MATROX
 	tristate "Matrox acceleration"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1344,7 +1323,7 @@ config FB_MATROX_MAVEN
 
 config FB_RADEON
 	tristate "ATI Radeon display support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_BACKLIGHT if FB_RADEON_BACKLIGHT
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
@@ -1385,7 +1364,7 @@ config FB_RADEON_DEBUG
 
 config FB_ATY128
 	tristate "ATI Rage128 display support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1408,7 +1387,7 @@ config FB_ATY128_BACKLIGHT
 
 config FB_ATY
 	tristate "ATI Mach64 display support" if PCI || ATARI
-	depends on FB && !SPARC32
+	depends on !SPARC32
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1458,7 +1437,7 @@ config FB_ATY_BACKLIGHT
 
 config FB_S3
 	tristate "S3 Trio/Virge support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1479,7 +1458,7 @@ config FB_S3_DDC
 
 config FB_SAVAGE
 	tristate "S3 Savage support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1518,7 +1497,7 @@ config FB_SAVAGE_ACCEL
 
 config FB_SIS
 	tristate "SiS/XGI display support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1547,7 +1526,7 @@ config FB_SIS_315
 
 config FB_VIA
        tristate "VIA UniChrome (Pro) and Chrome9 display support"
-       depends on FB && PCI && X86
+       depends on PCI && X86
        select FB_CFB_FILLRECT
        select FB_CFB_COPYAREA
        select FB_CFB_IMAGEBLIT
@@ -1591,7 +1570,7 @@ endif
 
 config FB_NEOMAGIC
 	tristate "NeoMagic display support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1606,7 +1585,7 @@ config FB_NEOMAGIC
 
 config FB_KYRO
 	tristate "IMG Kyro support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1619,7 +1598,7 @@ config FB_KYRO
 
 config FB_3DFX
 	tristate "3Dfx Banshee/Voodoo3/Voodoo5 display support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_IMAGEBLIT
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1649,7 +1628,7 @@ config FB_3DFX_I2C
 
 config FB_VOODOO1
 	tristate "3Dfx Voodoo Graphics (sst1) support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1667,7 +1646,7 @@ config FB_VOODOO1
 
 config FB_VT8623
 	tristate "VIA VT8623 support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1681,7 +1660,7 @@ config FB_VT8623
 
 config FB_TRIDENT
 	tristate "Trident/CyberXXX/CyberBlade support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1701,7 +1680,7 @@ config FB_TRIDENT
 
 config FB_ARK
 	tristate "ARK 2000PV support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1715,7 +1694,7 @@ config FB_ARK
 
 config FB_PM3
 	tristate "Permedia3 support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1727,7 +1706,7 @@ config FB_PM3
 
 config FB_CARMINE
 	tristate "Fujitsu carmine frame buffer support"
-	depends on FB && PCI
+	depends on PCI
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1811,7 +1790,7 @@ source "drivers/video/fbdev/geode/Kconfig"
 
 config FB_HIT
 	tristate "HD64461 Frame Buffer support"
-	depends on FB && HD64461
+	depends on  HD64461
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1831,7 +1810,7 @@ config FB_PMAG_AA
 
 config FB_PMAG_BA
 	tristate "PMAG-BA TURBOchannel framebuffer support"
-	depends on FB && TC
+	depends on  TC
  	select FB_CFB_FILLRECT
  	select FB_CFB_COPYAREA
  	select FB_CFB_IMAGEBLIT
@@ -1841,7 +1820,7 @@ config FB_PMAG_BA
 
 config FB_PMAGB_B
 	tristate "PMAGB-B TURBOchannel framebuffer support"
-	depends on FB && TC
+	depends on  TC
  	select FB_CFB_FILLRECT
  	select FB_CFB_COPYAREA
  	select FB_CFB_IMAGEBLIT
@@ -1883,7 +1862,7 @@ config FB_68328
 
 config FB_PXA168
 	tristate "PXA168/910 LCD framebuffer support"
-	depends on FB && (CPU_PXA168 || CPU_PXA910)
+	depends on  (CPU_PXA168 || CPU_PXA910)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1893,7 +1872,7 @@ config FB_PXA168
 
 config FB_PXA
 	tristate "PXA LCD framebuffer support"
-	depends on FB && ARCH_PXA
+	depends on  ARCH_PXA
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1947,7 +1926,7 @@ config PXA3XX_GCU
 
 config FB_MBX
 	tristate "2700G LCD framebuffer support"
-	depends on FB && ARCH_PXA
+	depends on  ARCH_PXA
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -1967,7 +1946,7 @@ config FB_MBX_DEBUG
 
 config FB_FSL_DIU
 	tristate "Freescale DIU framebuffer support"
-	depends on FB && FSL_SOC
+	depends on  FSL_SOC
 	select FB_MODE_HELPERS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -1978,7 +1957,7 @@ config FB_FSL_DIU
 
 config FB_W100
 	tristate "W100 frame buffer support"
-	depends on FB && ARCH_PXA
+	depends on  ARCH_PXA
  	select FB_CFB_FILLRECT
  	select FB_CFB_COPYAREA
  	select FB_CFB_IMAGEBLIT
@@ -1995,7 +1974,7 @@ config FB_W100
 
 config FB_SH_MOBILE_LCDC
 	tristate "SuperH Mobile LCDC framebuffer support"
-	depends on FB && (SUPERH || ARCH_SHMOBILE) && HAVE_CLK
+	depends on  (SUPERH || ARCH_SHMOBILE) && HAVE_CLK
 	depends on FB_SH_MOBILE_MERAM || !FB_SH_MOBILE_MERAM
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
@@ -2019,7 +1998,7 @@ config FB_SH_MOBILE_HDMI
 
 config FB_TMIO
 	tristate "Toshiba Mobile IO FrameBuffer support"
-	depends on FB && (MFD_TMIO || COMPILE_TEST)
+	depends on  (MFD_TMIO || COMPILE_TEST)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2041,7 +2020,7 @@ config FB_TMIO_ACCELL
 
 config FB_S3C
 	tristate "Samsung S3C framebuffer support"
-	depends on FB && (CPU_S3C2416 || ARCH_S3C64XX || \
+	depends on  (CPU_S3C2416 || ARCH_S3C64XX || \
 		ARCH_S5PV210 || ARCH_EXYNOS)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -2066,7 +2045,7 @@ config FB_S3C_DEBUG_REGWRITE
 
 config FB_S3C2410
 	tristate "S3C2410 LCD framebuffer support"
-	depends on FB && ARCH_S3C24XX
+	depends on  ARCH_S3C24XX
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2089,7 +2068,7 @@ config FB_S3C2410_DEBUG
 
 config FB_NUC900
         tristate "NUC900 LCD framebuffer support"
-        depends on FB && ARCH_W90X900
+        depends on  ARCH_W90X900
         select FB_CFB_FILLRECT
         select FB_CFB_COPYAREA
         select FB_CFB_IMAGEBLIT
@@ -2103,7 +2082,7 @@ config GPM1040A0_320X240
 
 config FB_SM501
 	tristate "Silicon Motion SM501 framebuffer support"
-	depends on FB && MFD_SM501
+	depends on  MFD_SM501
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2120,7 +2099,7 @@ config FB_SM501
 
 config FB_SMSCUFX
 	tristate "SMSC UFX6000/7000 USB Framebuffer support"
-	depends on FB && USB
+	depends on  USB
 	select FB_MODE_HELPERS
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
@@ -2136,7 +2115,7 @@ config FB_SMSCUFX
 
 config FB_UDL
 	tristate "Displaylink USB Framebuffer support"
-	depends on FB && USB
+	depends on  USB
 	select FB_MODE_HELPERS
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
@@ -2151,7 +2130,7 @@ config FB_UDL
 
 config FB_IBM_GXT4500
 	tristate "Framebuffer support for IBM GXT4000P/4500P/6000P/6500P adaptors"
-	depends on FB && PPC
+	depends on  PPC
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2163,7 +2142,7 @@ config FB_IBM_GXT4500
 
 config FB_PS3
 	tristate "PS3 GPU framebuffer driver"
-	depends on FB && PS3_PS3AV
+	depends on  PS3_PS3AV
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
 	select FB_SYS_IMAGEBLIT
@@ -2184,7 +2163,7 @@ config FB_PS3_DEFAULT_SIZE_M
 
 config FB_XILINX
 	tristate "Xilinx frame buffer support"
-	depends on FB && (XILINX_VIRTEX || MICROBLAZE || ARCH_ZYNQ)
+	depends on  (XILINX_VIRTEX || MICROBLAZE || ARCH_ZYNQ)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2195,7 +2174,7 @@ config FB_XILINX
 
 config FB_GOLDFISH
 	tristate "Goldfish Framebuffer"
-	depends on FB && HAS_DMA && (GOLDFISH || COMPILE_TEST)
+	depends on  HAS_DMA && (GOLDFISH || COMPILE_TEST)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2204,11 +2183,11 @@ config FB_GOLDFISH
 
 config FB_COBALT
 	tristate "Cobalt server LCD frame buffer support"
-	depends on FB && (MIPS_COBALT || MIPS_SEAD3)
+	depends on  (MIPS_COBALT || MIPS_SEAD3)
 
 config FB_SH7760
 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
-	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+	depends on  (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
@@ -2223,7 +2202,7 @@ config FB_SH7760
 
 config FB_DA8XX
 	tristate "DA8xx/OMAP-L1xx/AM335x Framebuffer support"
-	depends on FB && (ARCH_DAVINCI_DA8XX || SOC_AM33XX)
+	depends on  (ARCH_DAVINCI_DA8XX || SOC_AM33XX)
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2260,7 +2239,7 @@ config FB_VIRTUAL
 
 config XEN_FBDEV_FRONTEND
 	tristate "Xen virtual frame buffer support"
-	depends on FB && XEN
+	depends on  XEN
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
 	select FB_SYS_IMAGEBLIT
@@ -2330,7 +2309,7 @@ config FB_MB862XX_I2C
 
 config FB_EP93XX
 	tristate "EP93XX frame buffer support"
-	depends on FB && ARCH_EP93XX
+	depends on  ARCH_EP93XX
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2341,21 +2320,21 @@ config FB_EP93XX
 
 config FB_PRE_INIT_FB
 	bool "Don't reinitialize, use bootloader's GDC/Display configuration"
-	depends on FB && FB_MB862XX_LIME
+	depends on  FB_MB862XX_LIME
 	---help---
 	  Select this option if display contents should be inherited as set by
 	  the bootloader.
 
 config FB_MSM
 	tristate "MSM Framebuffer support"
-	depends on FB && ARCH_MSM
+	depends on  ARCH_MSM
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
 
 config FB_MX3
 	tristate "MX3 Framebuffer support"
-	depends on FB && MX3_IPU
+	depends on  MX3_IPU
 	select BACKLIGHT_CLASS_DEVICE
 	select BACKLIGHT_LCD_SUPPORT
 	select FB_CFB_FILLRECT
@@ -2400,7 +2379,7 @@ config FB_AUO_K190X
 
 config FB_AUO_K1900
 	tristate "AUO-K1900 EPD controller support"
-	depends on FB && FB_AUO_K190X
+	depends on  FB_AUO_K190X
 	help
 	  This driver implements support for the AUO K1900 epd-controller.
 	  This controller can drive Sipix epaper displays but can only do
@@ -2408,7 +2387,7 @@ config FB_AUO_K1900
 
 config FB_AUO_K1901
 	tristate "AUO-K1901 EPD controller support"
-	depends on FB && FB_AUO_K190X
+	depends on  FB_AUO_K190X
 	help
 	  This driver implements support for the AUO K1901 epd-controller.
 	  This controller can drive Sipix epaper displays and supports
@@ -2416,7 +2395,7 @@ config FB_AUO_K1901
 
 config FB_JZ4740
 	tristate "JZ4740 LCD framebuffer support"
-	depends on FB && MACH_JZ4740
+	depends on  MACH_JZ4740
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
 	select FB_SYS_IMAGEBLIT
@@ -2425,7 +2404,7 @@ config FB_JZ4740
 
 config FB_MXS
 	tristate "MXS LCD framebuffer support"
-	depends on FB && ARCH_MXS
+	depends on  ARCH_MXS
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2436,7 +2415,7 @@ config FB_MXS
 
 config FB_PUV3_UNIGFX
 	tristate "PKUnity v3 Unigfx framebuffer support"
-	depends on FB && UNICORE32 && ARCH_PUV3
+	depends on  UNICORE32 && ARCH_PUV3
 	select FB_SYS_FILLRECT
 	select FB_SYS_COPYAREA
 	select FB_SYS_IMAGEBLIT
@@ -2447,7 +2426,7 @@ config FB_PUV3_UNIGFX
 
 config FB_HYPERV
 	tristate "Microsoft Hyper-V Synthetic Video support"
-	depends on FB && HYPERV
+	depends on  HYPERV
 	select FB_CFB_FILLRECT
 	select FB_CFB_COPYAREA
 	select FB_CFB_IMAGEBLIT
@@ -2490,7 +2469,7 @@ config FB_SH_MOBILE_MERAM
 
 config FB_SSD1307
 	tristate "Solomon SSD1307 framebuffer support"
-	depends on FB && I2C
+	depends on I2C
 	depends on OF
 	depends on GPIOLIB
 	select FB_SYS_FOPS
